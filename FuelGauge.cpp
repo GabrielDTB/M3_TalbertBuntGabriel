@@ -1,13 +1,19 @@
 #include "FuelGauge.h"
 
+// Static consts
+const double FuelGauge::DEFAULT_FUEL = 0;
+const double FuelGauge::DEFAULT_FUEL_ECONOMY = 32;
+const double FuelGauge::DEFAULT_ADD_FUEL_VOLUME = 0.1;
+const double FuelGauge::DEFAULT_BURN_FUEL_VOLUME = 1;
+
 /**
  * Constructs a FuelGauge object with a max fuel amount and, optionally, a starting fuel amount.
  *
  * @param m max fuel that can be held
  * @param f starting fuel amount
  */
-FuelGauge::FuelGauge(double m, double f) :  // f default is 0
-maxFuel(m), fuel(f)
+FuelGauge::FuelGauge(double mf, double fs, double fe) :
+maxFuel(mf), fuel(fs), fuelEconomy(fe)
 {
 }
 
@@ -27,7 +33,7 @@ double FuelGauge::getFuel() const
  * @param volume how much fuel to add
  * @return how much fuel was left over
  */
-double FuelGauge::addFuel(double volume)  // Default is 0.1
+double FuelGauge::addFuel(double volume)
 {
     if ((fuel + volume) < maxFuel)
     {
@@ -52,7 +58,7 @@ double FuelGauge::addFuel(double volume)  // Default is 0.1
  * @param volume how much fuel to burn
  * @return how much fuel that could not be burned
  */
-double FuelGauge::burnFuel(double volume)  // Default is 1
+double FuelGauge::burnFuel(double volume)
 {
     if (fuel < volume)
     {

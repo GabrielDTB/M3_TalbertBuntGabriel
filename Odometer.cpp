@@ -1,7 +1,8 @@
 #include "Odometer.h"
+#include "FuelGauge.h"
 
-Odometer::Odometer(double mi, int ma) :  // Defaults are 0
-mileage(mi), maxMiles(ma)
+Odometer::Odometer(FuelGauge* fg, double mi, int ma) :  // Defaults are 0
+gauge(fg), mileage(mi), maxMiles(ma)
 {
 }
 
@@ -17,4 +18,14 @@ void Odometer::incrementMileage(double increment)  // Default is 1
     {
         mileage -= maxMiles;
     }
+}
+
+double Odometer::drive(double miles)  // Default is 1
+{
+    if (!gauge->burnFuel(miles / gauge->))
+}
+
+Odometer operator++(Odometer self)
+{
+    self.drive();
 }
