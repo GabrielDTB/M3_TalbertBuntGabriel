@@ -1,7 +1,11 @@
 #include "Odometer.h"
 #include "FuelGauge.h"
 
-Odometer::Odometer(FuelGauge* fg, double mi, int ma) :  // Defaults are 0
+const long double Odometer::DEFAULT_MILEAGE = 0;
+const int Odometer::DEFAULT_MAX_MILES = 999999;
+const long double Odometer::DEFAULT_DRIVE_DISTANCE = 1;
+
+Odometer::Odometer(FuelGauge* fg, long double mi, int ma) :
 gauge(fg), mileage(mi), maxMiles(ma)
 {
 }
@@ -11,7 +15,7 @@ int Odometer::getMileage() const
     return int(mileage);
 }
 
-void Odometer::incrementMileage(double increment)  // Default is 1
+void Odometer::incrementMileage(long double increment)
 {
     mileage += increment;
     if (mileage > maxMiles)
@@ -20,12 +24,19 @@ void Odometer::incrementMileage(double increment)  // Default is 1
     }
 }
 
-double Odometer::drive(double miles)  // Default is 1
+long double Odometer::drive(long double distance)
 {
-    if (!gauge->burnFuel(miles / gauge->))
-}
-
-Odometer operator++(Odometer self)
-{
-    self.drive();
+    long double gasNeeded = distance / gauge->getFuelEconomy();
+    long double gasBurned = gauge->burnFuel(gasNeeded);
+    if (gasBurned < gasNeeded)
+    {
+        long double distanceDrove = gasBurned * gauge->getFuelEconomy();
+        incrementMileage(distanceDrove);
+        return (distanceDrove);
+    }
+    else
+    {
+        incrementMileage(distance);
+        return distance;
+    }
 }

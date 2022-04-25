@@ -6,22 +6,21 @@
 class Odometer
 {
     private:
-      static const double DEFAULT_MILEAGE;
-      static const double DEFAULT_MAX_MILES;
-      static const double DEFAULT_DRIVE_DISTANCE;
+      // Everything that touches "mileage" directly is set to long double for max precision
+      static const long double DEFAULT_MILEAGE;
+      static const int DEFAULT_MAX_MILES;
+      static const long double DEFAULT_DRIVE_DISTANCE;
 
-      // I put this as long double so that I lose as little
-      // precision as possible for decimal mileages.
-      long double mileage;
+      long double mileage;  // Long double for max precision
       int maxMiles;
       FuelGauge* gauge;
 
-      void incrementMileage(double = 1);
+      void incrementMileage(long double = DEFAULT_DRIVE_DISTANCE);
 
     public:
-      explicit Odometer(FuelGauge*, double = 0, int = 999999);
+      explicit Odometer(FuelGauge*, long double = DEFAULT_MILEAGE, int = DEFAULT_MAX_MILES);
       int getMileage() const;
-      double drive(double = 1);
+      long double drive(long double = DEFAULT_DRIVE_DISTANCE);
 };
 
 #endif //ODOMETER_H

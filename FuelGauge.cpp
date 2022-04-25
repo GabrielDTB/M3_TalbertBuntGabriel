@@ -1,10 +1,10 @@
 #include "FuelGauge.h"
 
 // Static consts
-const double FuelGauge::DEFAULT_FUEL = 0;
+const long double FuelGauge::DEFAULT_FUEL = 0;
 const double FuelGauge::DEFAULT_FUEL_ECONOMY = 32;
-const double FuelGauge::DEFAULT_ADD_FUEL_VOLUME = 0.1;
-const double FuelGauge::DEFAULT_BURN_FUEL_VOLUME = 1;
+const long double FuelGauge::DEFAULT_ADD_FUEL_VOLUME = 0.1;
+const long double FuelGauge::DEFAULT_BURN_FUEL_VOLUME = 1;
 
 /**
  * Constructs a FuelGauge object with a max fuel amount and, optionally, a starting fuel amount.
@@ -12,7 +12,7 @@ const double FuelGauge::DEFAULT_BURN_FUEL_VOLUME = 1;
  * @param m max fuel that can be held
  * @param f starting fuel amount
  */
-FuelGauge::FuelGauge(double mf, double fs, double fe) :
+FuelGauge::FuelGauge(double mf, long double fs, double fe) :
 maxFuel(mf), fuel(fs), fuelEconomy(fe)
 {
 }
@@ -22,7 +22,7 @@ maxFuel(mf), fuel(fs), fuelEconomy(fe)
  *
  * @return the current fuel amount
  */
-double FuelGauge::getFuel() const
+long double FuelGauge::getFuel() const
 {
     return fuel;
 }
@@ -31,24 +31,20 @@ double FuelGauge::getFuel() const
  * Adds an amount of fuel to the FuelGauge, up to the maximum amount that can be held.
  *
  * @param volume how much fuel to add
- * @return how much fuel was left over
+ * @return how much fuel was added
  */
-double FuelGauge::addFuel(double volume)
+long double FuelGauge::addFuel(long double volume)
 {
     if ((fuel + volume) < maxFuel)
     {
         fuel += volume;
-        return 0;
-    }
-    else if (fuel < maxFuel)
-    {
-        double leftOver = volume - (maxFuel - fuel);
-        fuel = maxFuel;
-        return leftOver;
+        return volume;
     }
     else
     {
-        return volume;
+        long double added = maxFuel - fuel;
+        fuel = maxFuel;
+        return added;
     }
 }
 
@@ -56,19 +52,31 @@ double FuelGauge::addFuel(double volume)
  * Removes an amount of fuel from the FuelGauge, up to the amount remaining in it.
  *
  * @param volume how much fuel to burn
- * @return how much fuel that could not be burned
+ * @return how much fuel that was burned
  */
-double FuelGauge::burnFuel(double volume)
+long double FuelGauge::burnFuel(long double volume)
 {
     if (fuel < volume)
     {
-        double deficit = volume - fuel;
+        long double burned = fuel;
         fuel = 0;
-        return deficit;
+        return burned;
     }
     else
     {
         fuel -= volume;
-        return 0;
+        return volume;
     }
+}
+
+double FuelGauge::getFuelEconomy() const
+{
+    return fuelEconomy;
+}
+
+FuelGauge FuelGauge::operator--()
+{
+    FuelGauge temp = *this;
+    burnFuel();
+    return temp;
 }

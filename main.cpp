@@ -4,34 +4,21 @@
 using namespace std;
 
 int main() {
-    FuelGauge gauge(2);
-    cout << gauge.getFuel() << endl;
-    cout << gauge.addFuel() << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.addFuel() << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.addFuel() << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.addFuel() << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.addFuel() << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.addFuel() << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.addFuel(10) << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.addFuel() << endl;
-    cout << gauge.getFuel() << endl;
+    auto* fg = new FuelGauge(20);
+    auto* od = new Odometer(fg);
 
-    cout << endl;
-    cout << gauge.burnFuel() << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.burnFuel(0.5) << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.burnFuel() << endl;
-    cout << gauge.getFuel() << endl;
-    cout << gauge.burnFuel() << endl;
-    cout << gauge.getFuel() << endl;
+    fg->addFuel(10);
+    for (short i=0; i<32; i++)
+    {
+        cout << od->drive(1) << endl;
+    }
+    cout << fg->getFuel() << endl;
+
+    fg--;
+    cout << fg->getFuel();
+
+    delete fg;
+    delete od;
 
     return 0;
 }
