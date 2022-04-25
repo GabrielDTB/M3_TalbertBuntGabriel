@@ -14,7 +14,7 @@ int main() {
     }
     cout << fg->getFuel() << endl;
 
-    fg--;
+    (*fg)--;
     cout << fg->getFuel();
 
     delete fg;

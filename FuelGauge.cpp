@@ -74,9 +74,9 @@ double FuelGauge::getFuelEconomy() const
     return fuelEconomy;
 }
 
-FuelGauge FuelGauge::operator--()
+FuelGauge FuelGauge::operator--(int)
 {
     FuelGauge temp = *this;
-    burnFuel();
+    this->burnFuel();
     return temp;
 }

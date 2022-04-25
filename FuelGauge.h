@@ -20,7 +20,7 @@ class FuelGauge
       long double addFuel(long double = DEFAULT_ADD_FUEL_VOLUME);
       double getFuelEconomy() const;
       long double burnFuel(long double = DEFAULT_BURN_FUEL_VOLUME);
-      FuelGauge operator--();
+      FuelGauge operator--(int);
 };
 
 #endif //FUELGAUGE_H
