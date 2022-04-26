@@ -13,7 +13,7 @@
  * Not too much actually goes on from the user's perspective, but if they
  * believed that not much was done under the hood they would be sorely mistaken.
  * The use of objects for the problem made it magnitudes more complicated, but it
- * doesn't really since the entire point of the assignment was to learn how to use objects,
+ * doesn't really matter since the entire point of the assignment was to learn how to use objects,
  * complexity be darned.
  *
  * /------------------------------------\
