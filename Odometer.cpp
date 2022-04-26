@@ -1,42 +1,70 @@
 #include "Odometer.h"
 #include "FuelGauge.h"
 
-const long double Odometer::DEFAULT_MILEAGE = 0;
+const short Odometer::DEFAULT_FUEL_ECONOMY = 32;
+const int Odometer::DEFAULT_MILES = 0;
 const int Odometer::DEFAULT_MAX_MILES = 999999;
-const long double Odometer::DEFAULT_DRIVE_DISTANCE = 1;
+const int Odometer::DEFAULT_DRIVE_STEP = 1;
 
-Odometer::Odometer(FuelGauge* fg, long double mi, int ma) :
-gauge(fg), mileage(mi), maxMiles(ma)
+/**
+ * Construct an Odometer object with a corresponding FuelGauge object.
+ * Optionally, starting miles, fuel economy, and max miles can be specified.
+ *
+ * @param fg pointer to a FuelGauge object
+ * @param fe how many miles to the gallon it gets
+ * @param mi starting miles
+ * @param ma max miles before rolling over to 0
+ */
+Odometer::Odometer(FuelGauge* fg, short fe, int mi, int ma) :
+gauge(fg), fuelEconomy(fe), miles(mi), maxMiles(ma)
 {
 }
 
-int Odometer::getMileage() const
+/**
+ * Gets the current miles driven.
+ *
+ * @return current miles driven
+ */
+int Odometer::getMiles() const
 {
-    return int(mileage);
+    return miles;
 }
 
-void Odometer::incrementMileage(long double increment)
+/**
+ * An intermediary function between drive and miles that does as the name implies.
+ * It is here for theoretical (nonexistent) future-proofing.
+ *
+ * @param step how much to increment miles by
+ */
+void Odometer::incrementMiles(int step)
 {
-    mileage += increment;
-    if (mileage > maxMiles)
+    miles += step;
+    newMiles += step;
+    if (miles > maxMiles)
     {
-        mileage -= maxMiles;
+        miles -= maxMiles;
     }
 }
 
-long double Odometer::drive(long double distance)
+/**
+ * Simulates 'driving' by increasing the miles driven and burning fuel.
+ *
+ * @return success or failure
+ */
+int Odometer::drive()
 {
-    long double gasNeeded = distance / gauge->getFuelEconomy();
-    long double gasBurned = gauge->burnFuel(gasNeeded);
-    if (gasBurned < gasNeeded)
+    if (gauge->getFuel() > 0)
     {
-        long double distanceDrove = gasBurned * gauge->getFuelEconomy();
-        incrementMileage(distanceDrove);
-        return (distanceDrove);
+        incrementMiles();
+        for (short i = fuelEconomy; newMiles >= i; )
+        {
+            newMiles -= i;
+            (*gauge)--;
+        }
+        return 1;
     }
     else
     {
-        incrementMileage(distance);
-        return distance;
+        return 0;
     }
 }
