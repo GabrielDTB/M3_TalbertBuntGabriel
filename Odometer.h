@@ -17,12 +17,11 @@ class Odometer
       int maxMiles;
       int newMiles = 0;
 
-      void incrementMiles(int = DEFAULT_DRIVE_STEP);
-
     public:
       explicit Odometer(FuelGauge*, short = DEFAULT_FUEL_ECONOMY, int = DEFAULT_MILES, int = DEFAULT_MAX_MILES);
 
       int getMiles() const;
+      void incrementMiles(int = DEFAULT_DRIVE_STEP);
       int drive();
 };
 
